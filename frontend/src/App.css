@@ -1,0 +1,39 @@
+html {
+  background-color: #222222;
+}
+body {
+  background: cornflowerblue;
+}
+.account {
+  text-align: left;
+}
+.error {
+  color: crimson;
+}
+.white {
+  color: white !important;
+}
+
+.App {
+  /* text-align: center; */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.vertical-align > div {
+  max-width: 400px;
+}
