@@ -41,7 +41,6 @@ class Payment extends Component {
     console.log("payment props is:", this.props);
     return (
       <section className="section full-column">
-        <h2 className="title white">Create a payment</h2>
         <div className="error">{error}</div>
         <form
           className="form-horizontal"

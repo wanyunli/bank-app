@@ -23,10 +23,22 @@ export default function account(state = ACCOUNT_DEFAULT_STATE, action) {
       return { ...state, loading: true };
     }
     case TOGGLE_PAYMENT: {
-      return { ...state, showPayment: !state.showPayment };
+      if (state.showTransactions)
+        return {
+          ...state,
+          showPayment: !state.showPayment,
+          showTransactions: !state.showTransactions
+        };
+      else return { ...state, showPayment: !state.showPayment };
     }
     case TOGGLE_TRANSACTIONS: {
-      return { ...state, showTransactions: !state.showTransactions };
+      if (state.showPayment)
+        return {
+          ...state,
+          showTransactions: !state.showTransactions,
+          showPayment: !state.showPayment
+        };
+      else return { ...state, showTransactions: !state.showTransactions };
     }
     default:
       return state;

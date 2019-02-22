@@ -37,16 +37,14 @@ class Account extends Component {
             <a className="navbar-item">Log in</a>
           </div>
         </nav>
-        <section className="section full-column">
-          <h1 className="title white">My Account</h1>
-          <div className="error">{error}</div>
-          <div className="container account">
-            <div className="white">
-              {account.firstName}:{account.lastName} balance: {account.balance}
-              euro
-            </div>
-          </div>
-        </section>
+        <h4 className="title is-4 padding-t-24 padding-l-24">
+          Welcome {account.firstName} {account.lastName}
+        </h4>
+        <h6 className="title is-6 padding-l-24">
+          Account balance: {account.balance} euro
+        </h6>
+        <div className="error">{error}</div>
+
         {this.props.showPayment && <Payment />}
         {this.props.showTransactions && <Transactions />}
       </div>

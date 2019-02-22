@@ -38,7 +38,6 @@ class Transactions extends Component {
     const { transactions, error } = this.props;
     return (
       <section className="section full-column">
-        <h2 className="title white">My Transactions</h2>
         <div className="error">{error}</div>
         <div className="container account">
           <div className="timeline">
