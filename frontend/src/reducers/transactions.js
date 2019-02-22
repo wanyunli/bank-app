@@ -13,7 +13,7 @@ export default function transactions(
 ) {
   switch (action.type) {
     case LOAD_TRANSACTIONS:
-      return { ...state, account: action.transactions, loading: false };
+      return { ...state, transactions: action.transactions, loading: false };
 
     case FETCH_TRANSACTIONS: {
       return { ...state, loading: true };
