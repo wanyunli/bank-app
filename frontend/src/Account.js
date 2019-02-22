@@ -43,6 +43,9 @@ class Account extends Component {
         <h6 className="title is-6 padding-l-24">
           Account balance: {account.balance} euro
         </h6>
+        <h6 className="title is-6 padding-l-24">
+          Account number: {account.accountId}
+        </h6>
         <div className="error">{error}</div>
 
         {this.props.showPayment && <Payment />}

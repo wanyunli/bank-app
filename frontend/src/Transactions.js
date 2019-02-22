@@ -8,8 +8,9 @@ import { fetchTransactions } from "./actions/transactions";
 function Record(props) {
   const record = props.record;
   const date = new Date(record.createdAt).toLocaleDateString();
+
   let name;
-  if (record > 0) {
+  if (record.amount > 0) {
     name = "From: " + record.transferName;
   } else {
     name = "To: " + record.receiverName;
@@ -36,21 +37,24 @@ class Transactions extends Component {
   }
   render() {
     const { transactions, error } = this.props;
+    const hasTransactions = !(transactions === []);
     return (
       <section className="section full-column">
         <div className="error">{error}</div>
         <div className="container account">
-          <div className="timeline">
-            <header className="timeline-header">
-              <span className="tag is-medium is-primary">Today</span>
-            </header>
-            {transactions.map(trans => (
-              <Record record={trans} key={trans.createdAt} />
-            ))}
-            <header className="timeline-header">
-              <span className="tag is-medium is-primary">Start</span>
-            </header>
-          </div>
+          {hasTransactions && (
+            <div className="timeline">
+              <header className="timeline-header">
+                <span className="tag is-medium is-primary">Today</span>
+              </header>
+              {transactions.map(trans => (
+                <Record record={trans} key={trans.createdAt} />
+              ))}
+              <header className="timeline-header">
+                <span className="tag is-medium is-primary">Start</span>
+              </header>
+            </div>
+          )}
         </div>
       </section>
     );

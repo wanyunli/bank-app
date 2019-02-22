@@ -52,7 +52,6 @@ async function addBalance(accountId, amount) {
 
 async function findByAccountId(accountId) {
   const result = await Account.find({ accountId });
-  console.log("findByAccountId result is:", result);
   if (isEmpty(result)) {
     console.log("findByAccountId result is1:", result);
     return {
@@ -61,7 +60,6 @@ async function findByAccountId(accountId) {
     };
   }
   const account = result[0];
-  console.log("findByAccountId result is2:", account);
   return {
     isSuccess: true,
     account
@@ -71,18 +69,60 @@ async function findByAccountId(accountId) {
 async function create(ctx) {
   // Create New Account from payload sent and save to database
   const newAccount = new Account({
-    accountId: "987654321",
+    accountId: "123",
     firstName: "Matti",
     lastName: "Rimpisalo",
-    balance: 500000
+    balance: 500000,
+    isLocked: false
   });
   const savedAccount = await newAccount.save();
-  savedAccount;
+  const newAccount1 = new Account({
+    accountId: "456",
+    firstName: "Matti",
+    lastName: "Rimpisalo",
+    balance: 10000,
+    isLocked: false
+  });
+  const savedAccount1 = await newAccount1.save();
+  savedAccount1;
 }
 
+async function lockAccounts(accounts) {
+  const query = {
+    accountId: { $in: accounts },
+    isLocked: false
+  };
+  const result = await Account.updateMany(query, {
+    $set: { isLocked: true }
+  });
+  console.log("lockAccounts result is: ", accounts);
+  if (result.nModified == 2)
+    return {
+      isSuccess: true
+    };
+  else
+    return {
+      isSuccess: false,
+      error: "Online bank is busy now, please try a few seconds later."
+    };
+  return accounts;
+}
+async function unlockAccounts(accounts) {
+  const query = {
+    accountId: { $in: accounts }
+  };
+  const result = await Account.updateMany(query, {
+    $set: { isLocked: false }
+  });
+  return {
+    isSuccess: true
+  };
+}
 module.exports = {
   findOne,
   findByAccountId,
   deductBalance,
-  addBalance
+  addBalance,
+  unlockAccounts,
+  lockAccounts
 };

@@ -7,7 +7,8 @@ const AccountSchema = new mongoose.Schema(
     accountId: { type: String },
     firstName: { type: String },
     lastName: { type: String },
-    balance: { type: Number }
+    balance: { type: Number },
+    isLocked: { type: Boolean }
   },
   { timestamps: true }
 );
