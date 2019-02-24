@@ -1,6 +1,7 @@
 /* frontend/src/reducers/account.js */
 import {
   LOAD_ACCOUNT,
+  LOGOUT_ACCOUNT,
   FETCH_ACCOUNT,
   TOGGLE_PAYMENT,
   TOGGLE_TRANSACTIONS
@@ -11,14 +12,22 @@ export const ACCOUNT_DEFAULT_STATE = {
   error: "",
   showPayment: false,
   showTransactions: false,
-  account: {}
+  account: {},
+  isAuthenticated: false
 };
 
 export default function account(state = ACCOUNT_DEFAULT_STATE, action) {
   switch (action.type) {
     case LOAD_ACCOUNT:
-      return { ...state, account: action.account, loading: false };
-
+      return {
+        ...state,
+        account: action.account,
+        loading: false,
+        isAuthenticated: true
+      };
+    case LOGOUT_ACCOUNT:
+      sessionStorage.removeItem("jwt");
+      return ACCOUNT_DEFAULT_STATE;
     case FETCH_ACCOUNT: {
       return { ...state, loading: true };
     }

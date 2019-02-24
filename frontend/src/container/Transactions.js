@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "bulma/css/bulma.css";
-// import "../../App.css";
 import "./../App.css";
 import "bulma-timeline/dist/css/bulma-timeline.min.css";
 import { fetchTransactions } from "../actions/transactions";

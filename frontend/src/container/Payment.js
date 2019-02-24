@@ -15,24 +15,22 @@ class Payment extends Component {
   createPayment(event) {
     event.preventDefault(); // Prevent form from reloading page
     const { receiverAccountId, receiverName, message, amount } = this.state;
-    const { accountId, firstName, lastName, balance } = this.props.account;
-    if (receiverAccountId && receiverName && amount > 0 && amount <= balance) {
-      const newPayment = {
-        transferAccountId: accountId,
-        receiverAccountId,
-        receiverName,
-        transferName: `${firstName} ${lastName}`,
-        message,
-        amount
-      };
-      this.props.createPayment(newPayment);
-      this.setState({
-        receiverAccountId: "",
-        receiverName: "",
-        message: "",
-        amount: 0
-      });
-    }
+    const { accountId, firstName, lastName } = this.props.account;
+    const newPayment = {
+      transferAccountId: accountId,
+      receiverAccountId: receiverAccountId.trim(),
+      receiverName: receiverName.trim(),
+      transferName: `${firstName} ${lastName}`,
+      message: message.trim(),
+      amount
+    };
+    this.props.createPayment(newPayment);
+    this.setState({
+      receiverAccountId: "",
+      receiverName: "",
+      message: "",
+      amount: 0
+    });
   }
 
   render() {
@@ -56,11 +54,12 @@ class Payment extends Component {
                   name="recever-account-id"
                   type="text"
                   value={receiverAccountId}
-                  placeholder="e.g. 1233445556"
+                  placeholder="e.g. 123456"
                   className="input"
                   onChange={e =>
                     this.setState({ receiverAccountId: e.target.value })
                   }
+                  required
                 />
               </div>
               <div className="field">
@@ -73,11 +72,11 @@ class Payment extends Component {
                     name="receiver-name"
                     type="text"
                     value={receiverName}
-                    placeholder="firstname lastName"
                     onChange={e =>
                       this.setState({ receiverName: e.target.value })
                     }
-                    className="input "
+                    className="input"
+                    required
                   />
                 </div>
               </div>
@@ -98,6 +97,7 @@ class Payment extends Component {
                       this.setState({ amount: parseFloat(e.target.value) })
                     }
                     className="input "
+                    required
                   />
                 </div>
               </div>
@@ -117,9 +117,6 @@ class Payment extends Component {
               </div>
 
               <div className="field">
-                <label className="label" htmlFor="save-payment">
-                  Single Button
-                </label>
                 <div className="control">
                   <button
                     id="save-payment"

@@ -1,4 +1,4 @@
-/* frontend/src/reducers/account.js */
+/* frontend/src/reducers/payment.js */
 import {
   CREATE_PAYMENT,
   CREATE_PAYMENT_SUCCESS,

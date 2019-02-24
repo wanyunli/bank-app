@@ -77,7 +77,7 @@ async function login(ctx) {
   }
   ctx.body = {
     isSuccess: true,
-    token: `Bearer ${token}`,
+    token,
     account: result.account
   };
 }

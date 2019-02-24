@@ -10,6 +10,7 @@ import {
   loadTransactions,
   TransactionsFailure
 } from "../actions/transactions";
+import { LOGIN, loginFail, loginSuccess } from "../actions/login";
 function* getAccount() {
   try {
     const res = yield call(fetch, "v1/account");
@@ -51,37 +52,48 @@ function* createFakeUser() {
   yield put(loadAccount(user));
 }
 
-function* fakeUserLogin() {
-  const data = {
-    userName: "mattirim",
-    password: "123456"
-  };
+function* userLogin(action) {
+  // const data = {
+  //   userName: "mattirim",
+  //   password: "123456"
+  // };
   // const data = {
   //   userName: "wanyunli",
   //   password: "654321",
   // };
-  const options = {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: new Headers({
-      "Content-Type": "application/json"
-    })
-  };
-
-  const res = yield call(fetch, "login", options);
-  const user = yield res.json();
-  console.log("user is :", user);
-  yield put(loadAccount(user));
+  try {
+    const options = {
+      method: "POST",
+      body: JSON.stringify(action.loginInfo),
+      headers: new Headers({
+        "Content-Type": "application/json"
+      })
+    };
+    const res = yield call(fetch, "login", options);
+    const loginResult = yield res.json();
+    console.log("login result is", loginResult);
+    if (loginResult.isSuccess) {
+      yield put(loginSuccess());
+      yield put(loadAccount(loginResult.account));
+      sessionStorage.setItem("jwt", loginResult.token);
+    } else {
+      yield put(loginFail(loginResult.error));
+    }
+  } catch (error) {
+    yield put(loginFail(`Login failed: ${error}`));
+  }
 }
 
 function* getTransactions(action) {
   const data = { accountId: action.accountId };
   try {
+    const token = sessionStorage.getItem("jwt");
     const options = {
       method: "POST",
       body: JSON.stringify(data),
       headers: new Headers({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       })
     };
     const res = yield call(fetch, "v1/transactions", options);
@@ -94,11 +106,13 @@ function* getTransactions(action) {
 
 function* savePayment(action) {
   try {
+    const token = sessionStorage.getItem("jwt");
     const options = {
       method: "POST",
       body: JSON.stringify(action.payment),
       headers: new Headers({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       })
     };
     const res = yield call(fetch, "v1/payment", options);
@@ -116,7 +130,7 @@ function* savePayment(action) {
 
 function* rootSaga() {
   // yield takeLatest(FETCH_ACCOUNT, getAccount);
-  yield takeLatest(FETCH_ACCOUNT, fakeUserLogin);
+  yield takeLatest(LOGIN, userLogin);
   yield takeLatest(CREATE_PAYMENT, savePayment);
   yield takeLatest(FETCH_TRANSACTIONS, getTransactions);
 }
