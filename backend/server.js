@@ -12,23 +12,6 @@ var jwt = require("koa-jwt");
 const app = new Koa();
 const router = new Router();
 
-// Custom 401 handling if you don't want to expose koa-jwt errors to users
-// app.use(function(ctx, next) {
-//   return next().catch(err => {
-//     if (401 == err.status) {
-//       ctx.status = 401;
-//       ctx.body = {
-//         error: "Protected resource, use Authorization header to get access\n"
-//       };
-//     } else {
-//       ctx.status = 500;
-//       ctx.body = {
-//         error: "Internal Server Error, please contact developer\n"
-//       };
-//     }
-//   });
-// });
-
 app.use(Helmet());
 
 if (process.env.NODE_ENV === "development") {
@@ -53,7 +36,7 @@ app.use(
   jwt({
     secret: process.env.SECRET
   }).unless({
-    path: [/^\/login/, "/"]
+    path: [/^\/login/, "/", /^\/static/, "/favicon.ico"]
   })
 );
 

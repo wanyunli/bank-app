@@ -78,15 +78,15 @@ async function create(ctx) {
     message: savedPayment.message,
     amount: savedPayment.amount
   });
-  ctx.body = {
-    isSuccess: true,
-    account: deductResult.account
-  };
   //unlcok both transfer account and receiver account
   const unlockResult = await unlockAccounts([
     transferAccountId,
     receiverAccountId
   ]);
+  ctx.body = {
+    isSuccess: true,
+    account: deductResult.account
+  };
 }
 module.exports = {
   create
