@@ -65,7 +65,7 @@ class Login extends Component {
               </div>
               <div className="field">
                 <label className="label" htmlFor="password">
-                  Receiver name
+                  Password
                 </label>
                 <div className="control">
                   <input

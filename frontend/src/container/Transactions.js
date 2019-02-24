@@ -22,10 +22,7 @@ function Record(props) {
         <p className="heading">{date}</p>
         <p>{name}</p>
         <p>Message: {record.message}</p>
-        <p>
-          Amount: {(Math.round(record.amount * 100) / 100).toLocaleString("eu")}{" "}
-          euro
-        </p>
+        <p>Amount: {record.amount} euro</p>
       </div>
     </div>
   );
