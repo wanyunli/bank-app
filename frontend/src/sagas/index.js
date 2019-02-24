@@ -39,7 +39,6 @@ function* createFakeUser() {
 
   const res = yield call(fetch, "login", options);
   const user = yield res.json();
-  console.log("user is :", user);
   yield put(loadAccount(user));
 }
 
@@ -62,7 +61,6 @@ function* userLogin(action) {
     };
     const res = yield call(fetch, "login", options);
     const loginResult = yield res.json();
-    console.log("login result is", loginResult);
     if (loginResult.isSuccess) {
       yield put(loginSuccess());
       yield put(loadAccount(loginResult.account));

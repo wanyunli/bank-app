@@ -46,7 +46,6 @@ async function addBalance(accountId, amount) {
 async function findByAccountId(accountId) {
   const result = await Account.find({ accountId });
   if (isEmpty(result)) {
-    console.log("findByAccountId result is1:", result);
     return {
       isSuccess: false,
       error: "Receiver account number do not exit."

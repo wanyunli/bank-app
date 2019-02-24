@@ -14,7 +14,6 @@ import Login from "./Login";
 class Account extends Component {
   render() {
     const { account, error } = this.props;
-    console.log("account is", account);
     return (
       <div>
         <nav className="navbar" role="navigation" aria-label="main navigation">

@@ -14,9 +14,7 @@ class Login extends Component {
   loginRequest(event) {
     event.preventDefault(); // Prevent form from reloading page
     const { userName, password } = this.state;
-    console.log("here..00.", this.state);
     if (!isEmpty(userName.trim()) && !isEmpty(password.trim())) {
-      console.log("here...", this.state);
       const loginInfo = {
         userName: userName.trim(),
         password: password.trim()
