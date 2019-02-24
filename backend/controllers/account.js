@@ -1,13 +1,6 @@
 const Account = require("../models/account");
 const isEmpty = require("../validation/isEmpty");
 
-async function findOne(ctx) {
-  // Fetch all Todo's from the database and return as payload
-  // const insert = await create(ctx);
-  const accounts = await Account.find({});
-  ctx.body = accounts[0];
-}
-
 async function deductBalance(accountId, amount) {
   const result = await Account.find({ accountId });
   if (isEmpty(result))
@@ -111,7 +104,6 @@ async function unlockAccounts(accounts) {
 }
 module.exports = {
   createAccount,
-  findOne,
   findByAccountId,
   deductBalance,
   addBalance,

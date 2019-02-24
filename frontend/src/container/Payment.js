@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import "bulma/css/bulma.css";
 import "./../App.css";
-import { submitPayment } from "../actions/payment";
+import { submitPayment, clearError } from "../actions/payment";
 
 class Payment extends Component {
   state = {
@@ -19,6 +19,7 @@ class Payment extends Component {
     this.setState({
       paymentCreated: true
     });
+    this.props.clearError();
   }
 
   cancelPayment(event) {
@@ -240,7 +241,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  submitPayment
+  submitPayment,
+  clearError
 };
 
 export default connect(

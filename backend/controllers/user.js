@@ -88,8 +88,6 @@ async function verifyLoginPassword(password, userName) {
   };
 }
 async function verifyPwdByAccountId(password, accountId) {
-  console.log("account id is: ", accountId);
-  console.log("password is: ", password);
   const user = await User.findOne({ accountId });
   if (isEmpty(user)) {
     return { error: "User account not found" };

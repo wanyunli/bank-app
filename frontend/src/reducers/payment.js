@@ -2,7 +2,8 @@
 import {
   SUBMIT_PAYMENT,
   SUBMIT_PAYMENT_SUCCESS,
-  SUBMIT_PAYMENT_FAIL
+  SUBMIT_PAYMENT_FAIL,
+  CLEAR_ERROR
 } from "../actions/payment";
 
 export const PAYMENT_DEFAULT_STATE = {
@@ -30,6 +31,11 @@ export default function payment(state = PAYMENT_DEFAULT_STATE, action) {
         payment: {},
         sucess: false,
         isSubmitting: false
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: ""
       };
     default:
       return state;
