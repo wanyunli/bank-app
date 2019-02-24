@@ -17,6 +17,11 @@ async function create(ctx) {
     accountId,
     password
   } = ctx.request.body;
+  if (receiverAccountId === transferAccountId) {
+    ctx.status = 400;
+    ctx.body = { error: "Can't transfer money to your own account." };
+    return;
+  }
   const result = await findByAccountId(receiverAccountId);
   if (!result.isSuccess) {
     ctx.status = 400;
