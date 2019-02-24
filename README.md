@@ -1,5 +1,5 @@
 # bank-app
-A simple online back
+A simple online bank appliation.
 
 This project use Koa as the backend server. Frontend use React, React Redux, Redux-Saga. Authentication with jwt.
 
