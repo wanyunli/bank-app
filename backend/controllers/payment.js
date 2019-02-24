@@ -6,12 +6,27 @@ const {
   unlockAccounts,
   lockAccounts
 } = require("./account");
+const { verifyPwdByAccountId } = require("./user");
 const { createTransaction, amount } = require("./transaction");
 
 async function create(ctx) {
-  const { transferAccountId, receiverAccountId, amount } = ctx.request.body;
+  const {
+    transferAccountId,
+    receiverAccountId,
+    amount,
+    accountId,
+    password
+  } = ctx.request.body;
   const result = await findByAccountId(receiverAccountId);
   if (result.isSuccess) {
+    //check the password match
+    const pwdVerifyResuted = await verifyPwdByAccountId(password, accountId);
+    console.log("pwdVerifyResuted is: ", pwdVerifyResuted);
+    if (!pwdVerifyResuted.isSuccess) {
+      ctx.status = 400;
+      ctx.body = pwdVerifyResuted;
+      return;
+    }
     //lock both transfer account and receiver account
     const lockResult = await lockAccounts([
       transferAccountId,

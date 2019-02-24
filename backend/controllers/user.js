@@ -47,42 +47,64 @@ async function login(ctx) {
     ctx.body = { error: errors };
     return;
   }
-  const user = await User.findOne({ userName: ctx.request.body.userName });
-  if (isEmpty(user)) {
-    ctx.status = 400;
-    ctx.body = { error: "Username not found" };
-    return;
-  }
-  const isMatch = await bcrypt.compare(
+  const result = await verifyLoginPassword(
     ctx.request.body.password,
-    user.password
+    ctx.request.body.userName
   );
-  if (!isMatch) {
+  if (result.isSuccess) {
+    ctx.body = {
+      isSuccess: true,
+      token: result.token,
+      account: result.account
+    };
+  } else {
     ctx.status = 400;
-    ctx.body = { error: "Wrong password" };
-    return;
+    ctx.body = result.error;
+  }
+}
+
+async function verifyLoginPassword(password, userName) {
+  const user = await User.findOne({ userName });
+  if (isEmpty(user)) {
+    return { error: "Username not found" };
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return { error: "Wrong password" };
   }
   const result = await findByAccountId(user.accountId);
   if (!result.isSuccess) {
-    ctx.status = 400;
-    ctx.body = { error: "Account not found" };
-    return;
+    return { error: "Account not found" };
   }
   const payload = { xp: Math.floor(Date.now() / 1000) - 60 * 60 }; // 60 seconds * 60 minutes = 1 hour
   const token = await jwt.sign(payload, process.env.SECRET);
   if (isEmpty(token)) {
-    ctx.status = 400;
-    ctx.body = { error: "There is some error when generate token" };
-    return;
+    return { error: "There is some error when generate token" };
   }
-  ctx.body = {
+  return {
     isSuccess: true,
     token,
     account: result.account
   };
 }
+async function verifyPwdByAccountId(password, accountId) {
+  console.log("account id is: ", accountId);
+  console.log("password is: ", password);
+  const user = await User.findOne({ accountId });
+  if (isEmpty(user)) {
+    return { error: "User account not found" };
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return { error: "Wrong password" };
+  }
+  return {
+    isSuccess: true
+  };
+}
 
 module.exports = {
   createUser,
-  login
+  login,
+  verifyPwdByAccountId
 };

@@ -1,12 +1,12 @@
 /* frontend/src/reducers/payment.js */
 import {
-  CREATE_PAYMENT,
-  CREATE_PAYMENT_SUCCESS,
-  CREATE_PAYMENT_FAIL
+  SUBMIT_PAYMENT,
+  SUBMIT_PAYMENT_SUCCESS,
+  SUBMIT_PAYMENT_FAIL
 } from "../actions/payment";
 
 export const PAYMENT_DEFAULT_STATE = {
-  saving: false,
+  isSubmitting: false,
   error: "",
   sucess: false,
   payment: {}
@@ -14,21 +14,22 @@ export const PAYMENT_DEFAULT_STATE = {
 
 export default function payment(state = PAYMENT_DEFAULT_STATE, action) {
   switch (action.type) {
-    case CREATE_PAYMENT:
-      return { ...state, payment: action.payment, saving: true };
-    case CREATE_PAYMENT_SUCCESS:
+    case SUBMIT_PAYMENT:
+      return { ...state, payment: action.payment, isSubmitting: true };
+    case SUBMIT_PAYMENT_SUCCESS:
       return {
         ...state,
         payment: {},
         sucess: true,
-        saving: false
+        saving: false,
+        isSubmitting: false
       };
-    case CREATE_PAYMENT_FAIL:
+    case SUBMIT_PAYMENT_FAIL:
       return {
         error: action.error,
         payment: {},
         sucess: false,
-        saving: false
+        isSubmitting: false
       };
     default:
       return state;

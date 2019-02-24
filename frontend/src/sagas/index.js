@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { FETCH_ACCOUNT, loadAccount, accountFailure } from "../actions/account";
+import { loadAccount, toggleTransactions } from "../actions/account";
 import {
-  CREATE_PAYMENT,
-  createPaymentSuccess,
-  createPaymentFail
+  SUBMIT_PAYMENT,
+  submitPaymentSuccess,
+  submitPaymentFail
 } from "../actions/payment";
 import {
   FETCH_TRANSACTIONS,
@@ -11,15 +11,6 @@ import {
   TransactionsFailure
 } from "../actions/transactions";
 import { LOGIN, loginFail, loginSuccess } from "../actions/login";
-function* getAccount() {
-  try {
-    const res = yield call(fetch, "v1/account");
-    const account = yield res.json();
-    yield put(loadAccount(account));
-  } catch (e) {
-    yield put(accountFailure(e.message));
-  }
-}
 
 function* createFakeUser() {
   const data = {
@@ -104,7 +95,7 @@ function* getTransactions(action) {
   }
 }
 
-function* savePayment(action) {
+function* submitPayment(action) {
   try {
     const token = sessionStorage.getItem("jwt");
     const options = {
@@ -119,19 +110,19 @@ function* savePayment(action) {
     const result = yield res.json();
     if (result.isSuccess) {
       yield put(loadAccount(result.account));
-      yield put(createPaymentSuccess());
+      yield put(submitPaymentSuccess());
+      yield put(toggleTransactions());
     } else {
-      yield put(createPaymentFail(result.error));
+      yield put(submitPaymentFail(result.error));
     }
   } catch (e) {
-    yield put(createPaymentFail(e.message));
+    yield put(submitPaymentFail(e.message));
   }
 }
 
 function* rootSaga() {
-  // yield takeLatest(FETCH_ACCOUNT, getAccount);
   yield takeLatest(LOGIN, userLogin);
-  yield takeLatest(CREATE_PAYMENT, savePayment);
+  yield takeLatest(SUBMIT_PAYMENT, submitPayment);
   yield takeLatest(FETCH_TRANSACTIONS, getTransactions);
 }
 
