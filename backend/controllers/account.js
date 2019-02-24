@@ -1,5 +1,5 @@
 const Account = require("../models/account");
-const { isEmpty } = require("ramda");
+const isEmpty = require("../validation/isEmpty");
 
 async function findOne(ctx) {
   // Fetch all Todo's from the database and return as payload
@@ -66,25 +66,17 @@ async function findByAccountId(accountId) {
   };
 }
 
-async function create(ctx) {
+async function createAccount(data) {
   // Create New Account from payload sent and save to database
   const newAccount = new Account({
-    accountId: "123",
-    firstName: "Matti",
-    lastName: "Rimpisalo",
-    balance: 500000,
+    accountId: data.accountId,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    balance: 0,
     isLocked: false
   });
   const savedAccount = await newAccount.save();
-  const newAccount1 = new Account({
-    accountId: "456",
-    firstName: "Matti",
-    lastName: "Rimpisalo",
-    balance: 10000,
-    isLocked: false
-  });
-  const savedAccount1 = await newAccount1.save();
-  savedAccount1;
+  return savedAccount;
 }
 
 async function lockAccounts(accounts) {
@@ -95,7 +87,6 @@ async function lockAccounts(accounts) {
   const result = await Account.updateMany(query, {
     $set: { isLocked: true }
   });
-  console.log("lockAccounts result is: ", accounts);
   if (result.nModified == 2)
     return {
       isSuccess: true
@@ -119,6 +110,7 @@ async function unlockAccounts(accounts) {
   };
 }
 module.exports = {
+  createAccount,
   findOne,
   findByAccountId,
   deductBalance,

@@ -20,6 +20,60 @@ function* getAccount() {
   }
 }
 
+function* createFakeUser() {
+  const data = {
+    firstName: "Matti",
+    lastName: "Rimisalo",
+    userName: "mattirim",
+    password: "123456",
+    password_confirm: "123456",
+    accountId: "123456"
+  };
+  // const data = {
+  //   firstName: "Yunli",
+  //   lastName: "Wan",
+  //   userName: "wanyunli",
+  //   password: "654321",
+  //   password_confirm: "654321",
+  //   accountId: "654321"
+  // };
+  const options = {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: new Headers({
+      "Content-Type": "application/json"
+    })
+  };
+
+  const res = yield call(fetch, "login", options);
+  const user = yield res.json();
+  console.log("user is :", user);
+  yield put(loadAccount(user));
+}
+
+function* fakeUserLogin() {
+  const data = {
+    userName: "mattirim",
+    password: "123456"
+  };
+  // const data = {
+  //   userName: "wanyunli",
+  //   password: "654321",
+  // };
+  const options = {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: new Headers({
+      "Content-Type": "application/json"
+    })
+  };
+
+  const res = yield call(fetch, "login", options);
+  const user = yield res.json();
+  console.log("user is :", user);
+  yield put(loadAccount(user));
+}
+
 function* getTransactions(action) {
   const data = { accountId: action.accountId };
   try {
@@ -61,7 +115,8 @@ function* savePayment(action) {
 }
 
 function* rootSaga() {
-  yield takeLatest(FETCH_ACCOUNT, getAccount);
+  // yield takeLatest(FETCH_ACCOUNT, getAccount);
+  yield takeLatest(FETCH_ACCOUNT, fakeUserLogin);
   yield takeLatest(CREATE_PAYMENT, savePayment);
   yield takeLatest(FETCH_TRANSACTIONS, getTransactions);
 }

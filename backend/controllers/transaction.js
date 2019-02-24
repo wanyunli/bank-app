@@ -1,5 +1,4 @@
 const Transaction = require("../models/transaction");
-const { isEmpty } = require("ramda");
 
 async function findByAccountId(ctx) {
   const transaction = await Transaction.find(

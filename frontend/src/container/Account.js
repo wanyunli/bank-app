@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "bulma/css/bulma.css";
-import "./App.css";
+import "./../App.css";
 import {
   fetchAccount,
   togglePayment,
   toggleTransactions
-} from "./actions/account";
+} from "../actions/account";
 import Payment from "./Payment";
 import Transactions from "./Transactions";
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "bulma/css/bulma.css";
-import "./App.css";
-import { createPayment } from "./actions/payment";
+import "./../App.css";
+import { createPayment } from "../actions/payment";
 
 class Payment extends Component {
   state = {
@@ -38,7 +38,6 @@ class Payment extends Component {
   render() {
     const { isSaving, isLoading, error } = this.props;
     let { receiverAccountId, receiverName, message, amount } = this.state;
-    console.log("payment props is:", this.props);
     return (
       <section className="section full-column">
         <div className="error">{error}</div>
